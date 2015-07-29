@@ -125,15 +125,8 @@ public class MainActivity extends Activity {
 
 				
 				slideSpeed = VelocityTracker.obtain();
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					Log.i("touch", "ParentDOWN");
-					// slideSpeed.addMovement(event);
-					maxSpeedX = 0;
-					maxSpeedY = 0;
-					return true;
-
-				} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-
+				if (event.getAction() == MotionEvent.ACTION_MOVE) {
+					Log.i("touch", "ParentMOVE");
 					slideSpeed.addMovement(event);
 					slideSpeed.computeCurrentVelocity(1000);
 					if (Math.abs(VelocityTrackerCompat.getXVelocity(slideSpeed, pointerId)) > Math.abs(maxSpeedX)) {
@@ -158,7 +151,7 @@ public class MainActivity extends Activity {
 				
 					return true;
 				} else if (event.getAction() == MotionEvent.ACTION_UP) {
-					// moveRecord=new LinkedList<HashMap<String,Float>>();
+					Log.i("touch", "ParentUP");
 					int moveX;
 					int moveY;
 					try{
@@ -201,7 +194,7 @@ public class MainActivity extends Activity {
 					slideSpeed.recycle();
 					moveRecord=new LinkedList<HashMap<String,Float>>();
 
-					return false;
+					return true;
 				}
 				return true;
 			}
