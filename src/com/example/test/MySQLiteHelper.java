@@ -17,6 +17,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	public static final String DATE_DAY = "dateDay";
 	public static final String DATE_HOUR = "dateHour";
 	public static final String DATE_MIN = "dateMin";
+	public static final String DATA_COLOR = "dataColor";
 	public static final String DATA_NOTE = "dataNote";
 	public static final String CNT_NAME = "cntName";
 	public static final String CNT_PHONE = "cntPhone";
@@ -33,7 +34,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 			DATA_TITLE + " TEXT NOT NULL, " + DATE_YEAR + " INTEGER, "
 			+ DATE_MONTH + " INTEGER, " + DATE_DAY + " INTEGER, " + DATE_HOUR
 			+ " INTEGER, " + DATE_MIN + " INTEGER, " + DATE_TIMESTAMP
-			+ " TEXT, " + DATE_TIMESTAMP_END + " TEXT, " + DATA_NOTE
+			+ " TEXT, " + DATE_TIMESTAMP_END + " TEXT, " + DATA_COLOR+" TEXT, "+DATA_NOTE
 			+ " TEXT, " + CNT_NAME + " TEXT, " + CNT_PHONE + " TEXT, "
 			+ CNT_EMAIL + " TEXT, " + MAP_NAME + " TEXT, " + MAP_LAT
 			+ " TEXT, " + MAP_LNG + " TEXT, " + RMD_A_TIMESTAMP + " TEXT, "
@@ -57,16 +58,42 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
 		db.execSQL(CREATE_TABLE);
+		
+		
 		ContentValues values = new ContentValues();
-		values.put("dataTitle", "");
-		values.put("dateTimeStamp", "");
-		values.put("dateTimeStampEnd", "");
+		ContentValues values2 = new ContentValues();
+		ContentValues values3 = new ContentValues();
+			
+		//7.15-7.18
+		values.put("dataTitle", "Coding");
+		values.put("dataColor", "#E6CAFF");
+		values.put("dateYear", "2015");
+		values.put("dateMonth", "6");
+		values.put("dateDay", "15");
+		values.put("dateTimeStamp", "1436889900134");
+		values.put("dateTimeStampEnd", "1437149100134");
+		//7.16-7.17
+		values2.put("dataTitle", "Meeting");
+		values2.put("dataColor", "#FFBFFF");
+		values2.put("dateYear", "2015");
+		values2.put("dateMonth", "6");
+		values2.put("dateDay", "16");
+		values2.put("dateTimeStamp", "1436976500134");
+		values2.put("dateTimeStampEnd", "1437064400999");
+		//7.17-7.20
+		values3.put("dataTitle", "Hiking");
+		values3.put("dataColor", "#FF9797");
+		values3.put("dateYear", "2015");
+		values3.put("dateMonth", "6");
+		values3.put("dateDay", "17");
+		values3.put("dateTimeStamp", "1437062900134");
+		values3.put("dateTimeStampEnd", "1437321601134");
+		
+		db.insert("plannerDB", null, values);
+		db.insert("plannerDB", null, values2);
+		db.insert("plannerDB", null, values3);
 		
 		
-		
-		
-		db.insert("cust", null, values);
-		//query(null);
 	
 	}
 

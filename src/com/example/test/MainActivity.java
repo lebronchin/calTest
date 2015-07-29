@@ -7,12 +7,10 @@ import java.util.List;
 
 
 
-
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +23,8 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 	MyHandler handler = new MyHandler();
 	MyListAdapter adapter;
 	SimpleAdapter adapter1;
+	private Animation anim,animNext,animLast;
 	private MySQLiteHelper helper;
 	private SQLiteDatabase db;
 	TextView display;
@@ -105,10 +106,12 @@ public class MainActivity extends Activity {
 		c4 = (LinearLayout) findViewById(R.id.c4);
 		c5 = (LinearLayout) findViewById(R.id.c5);
 		c6 = (LinearLayout) findViewById(R.id.c6);
-		
+		//sample database of plannerdata
 		helper =new MySQLiteHelper(this, "plannerdata", null, 1);
 		db=helper.getReadableDatabase();
-
+		animNext=AnimationUtils.loadAnimation(this, R.anim.next);
+		animLast=AnimationUtils.loadAnimation(this, R.anim.last);
+		anim=AnimationUtils.loadAnimation(this, R.anim.alpha);
 		wholeCalendar.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -156,14 +159,18 @@ public class MainActivity extends Activity {
 					return true;
 				} else if (event.getAction() == MotionEvent.ACTION_UP) {
 					// moveRecord=new LinkedList<HashMap<String,Float>>();
-					int move;
+					int moveX;
+					int moveY;
 					try{
-					move = (int) (moveRecord.getFirst().get("y") - moveRecord.getLast().get("y"));
+					moveX= (int) (moveRecord.getFirst().get("x") - moveRecord.getLast().get("x"));
+					moveY = (int) (moveRecord.getFirst().get("y") - moveRecord.getLast().get("y"));
 					}catch(Exception e){
 						return false;
 					}
+					if(Math.abs(maxSpeedX)<Math.abs(maxSpeedY)){
+					
 					if (isWeekMode==false) {
-						if (move >= 2 * gridHeight||maxSpeedY<-2000) {
+						if (moveY >= 2 * gridHeight||maxSpeedY<-2000) {
 							handler.sendEmptyMessage(SET_WEEK_MODE);
 							isWeekMode=true;
 						} else {
@@ -172,13 +179,24 @@ public class MainActivity extends Activity {
 						}
 						maxSpeedY=0;
 					} else {
-						if (move <=-2 * gridHeight||maxSpeedY>2000) {
+						if (moveY <=-2 * gridHeight||maxSpeedY>2000) {
 							handler.sendEmptyMessage(SET_MONTH_MODE);
 							isWeekMode=false;
 						} else {
 							handler.sendEmptyMessage(SET_WEEK_MODE);
 						}
 						maxSpeedY=0;
+					}
+					}else{
+						
+						if (maxSpeedX<-2000) {
+							nextMonth(null);
+							
+						} else if(maxSpeedX>2000) {
+							lastMonth(null);
+							
+						}
+						maxSpeedX=0;	
 					}
 					slideSpeed.recycle();
 					moveRecord=new LinkedList<HashMap<String,Float>>();
@@ -295,9 +313,16 @@ public class MainActivity extends Activity {
 			Calendar cl = Calendar.getInstance();
 			cl.setTimeInMillis(inmilli);
 			cl.get(Calendar.DAY_OF_MONTH);
-			
+			String hour=String.valueOf(cl.get(Calendar.HOUR_OF_DAY));
+			String minute=String.valueOf(cl.get(Calendar.MINUTE));;
+			if(cl.get(Calendar.HOUR_OF_DAY)<=9){
+				hour="0"+String.valueOf(cl.get(Calendar.HOUR_OF_DAY));
+			}
+			if(cl.get(Calendar.MINUTE)<=9){
+				minute="0"+String.valueOf(cl.get(Calendar.MINUTE));
+			}
 			String timeText = shortMonthList[cl.get(Calendar.MONTH)] + " " + cl.get(Calendar.DAY_OF_MONTH) + "\n"
-					+ cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE);
+					+ hour + ":" + minute;
 			String titleText = toDoList.get(position).get("dataTitle");
 			if (items.get(position) != null) {
 				timeTag.setTextColor(Color.WHITE);
@@ -530,6 +555,14 @@ public class MainActivity extends Activity {
 				break;
 				
 			case 7:
+				Calendar getStamp=Calendar.getInstance();
+				
+				getStamp.set(chosenYear,chosenMonth,chosenDay,0,0,0);
+				long chosenInMilli=((getStamp.getTimeInMillis()/1000)+1)*1000;
+				
+				//以上只是要抓chosendate的後一天
+				
+				query(chosenInMilli);
 				sendEmptyMessage(CHANGE_DISPLAY);
 				adapter = new MyListAdapter(MainActivity.this, R.layout.tasklist_layout, (List) toDoList);
 				taskList.setAdapter(adapter);
@@ -562,33 +595,45 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-//   public void query(long timeStamp){//timeStamp為隔日凌晨
-//	   Cursor c=db.query("plannerDB", new String[]{"_id","dataTitle","dataColor","dateTimeStamp","dateTimeStampEnd"}, "dateTimeStamp<? and dateTimeStampEnd>?", new String[]{timeStamp+"",timeStamp+""}, null, null, "dateTimeStamp asc");
-//	  
-//	   while(c.moveToNext()){
-//			String _id = c.getString(c.getColumnIndex("_id"));
-//			String dataTitle =c.getString(c.getColumnIndex("dataTitle"));
-//			String dataColor =c.getString(c.getColumnIndex("dataColor"));
-//			String dateTimeStamp =c.getString(c.getColumnIndex("dateTimeStamp"));
-//			String dateTimeStampEnd =c.getString(c.getColumnIndex("dateTimeStampEnd"));
-//			HashMap<String, String> attr=new HashMap<String, String>();
-//			attr.put("_id", _id);
-//			attr.put("dataTitle", dataTitle);
-//			attr.put("dataColor", dataColor);
-//			attr.put("dateTimeStamp", dateTimeStamp);
-//			attr.put("dateTimeStampEnd", dateTimeStampEnd);
-//			if(toDoList.isEmpty()){
-//				toDoList.add(attr);
-//			}else{
-//				toDoList.clear();
-//				toDoList.add(attr);
-//			}
-//		
-//		}
-//	   
-//   }
+   public void query(long timeStamp){//timeStamp為隔日凌晨
+	   
+	   Log.i("brad", chosenYear+"."+chosenMonth+"."+chosenDay+"Query");
+	   Cursor c=db.query("plannerDB", new String[]{"_id","dataTitle","dataColor","dateTimeStamp","dateTimeStampEnd"}, "(dateTimeStamp<? and dateTimeStampEnd>?) or (dateYear=? and dateMonth=? and dateDay=?)", new String[]{timeStamp+"",timeStamp+"",chosenYear+"",chosenMonth+"",chosenDay+""}, null, null, "dateTimeStamp asc");
+	   toDoList.clear();
+	   while(c.moveToNext()){
+			String _id = c.getString(c.getColumnIndex("_id"));
+			String dataTitle =c.getString(c.getColumnIndex("dataTitle"));
+			String dataColor =c.getString(c.getColumnIndex("dataColor"));
+			String dateTimeStamp =c.getString(c.getColumnIndex("dateTimeStamp"));
+			String dateTimeStampEnd =c.getString(c.getColumnIndex("dateTimeStampEnd"));
+			HashMap<String, String> attr=new HashMap<String, String>();
+			attr.put("_id", _id);
+			attr.put("dataTitle", dataTitle);
+			attr.put("dataColor", dataColor);
+			attr.put("dateTimeStamp", dateTimeStamp);
+			attr.put("dateTimeStampEnd", dateTimeStampEnd);
+			
+				toDoList.add(attr);
+			
+		
+		}
+	   
+   }
 	
 	public void home(View view){
+		
+		if(DateRecord.get("yearOfToday")>displayYear){
+			wholeCalendar.startAnimation(animNext);
+		}else if(DateRecord.get("yearOfToday")<displayYear){
+			wholeCalendar.startAnimation(animLast);
+		}else if(DateRecord.get("monthOfToday")==displayMonth){
+			wholeCalendar.startAnimation(anim);
+		}else if(DateRecord.get("monthOfToday")>displayMonth){
+			wholeCalendar.startAnimation(animNext);
+		}else if(DateRecord.get("monthOfToday")<displayMonth){
+			wholeCalendar.startAnimation(animLast);
+		}
+		
 		displayYear=chosenYear=DateRecord.get("yearOfToday");
 		displayMonth=chosenMonth=DateRecord.get("monthOfToday");
 		setChosenDay(DateRecord.get("dayOfToday"));
@@ -597,6 +642,7 @@ public class MainActivity extends Activity {
 			handler.sendEmptyMessage(SET_WEEK_MODE);
 		}
 		handler.sendEmptyMessage(GET_TASK_LIST);
+		
 		
 		
 	}
@@ -778,16 +824,15 @@ public class MainActivity extends Activity {
 			displayMonth--;
 			chosenMonth=displayMonth;
 			
-			setChosenDay(1);
 		} else {
 			chosenMonth = 11;
 			displayMonth=11;
 			
 			displayYear--;
 			chosenYear=displayYear;
-			setChosenDay(1);
+			
 		}
-		
+		setChosenDay(1);
 		handler.sendEmptyMessage(CHANGE_MONTH);
 		
 		}else{
@@ -825,6 +870,12 @@ public class MainActivity extends Activity {
 			}
 			if(chosenLine>minChosenLine){
 				chosenLine--;
+				if(chosenLine==0){
+					setChosenDay(1);	
+				}else{
+				int setDay=cv[chosenLine*7].getDay();
+				setChosenDay(setDay);
+				}
 				handler.sendEmptyMessage(SET_WEEK_MODE);
 			}else{
 				if (displayMonth >0) {
@@ -840,6 +891,11 @@ public class MainActivity extends Activity {
 					chosenYear=displayYear;
 					setChosenDay(1);
 				}
+				int[] LastM=getCalendarContent(chosenYear, chosenMonth);
+
+				int setDay=LastM[switchWeek*7];
+				setChosenDay(setDay);
+				
 				
 				handler.sendEmptyMessage(CHANGE_MONTH);
 				chosenLine=switchWeek;
@@ -848,6 +904,8 @@ public class MainActivity extends Activity {
 			}
 			
 		}
+		wholeCalendar.startAnimation(animLast);	
+		handler.sendEmptyMessage(GET_TASK_LIST);
 	}
 
 	public void nextMonth(View view) {
@@ -858,7 +916,7 @@ public class MainActivity extends Activity {
 			
 			displayMonth++;
 			chosenMonth=displayMonth;
-			setChosenDay(1);
+			
 
 			
 		} else {
@@ -867,9 +925,9 @@ public class MainActivity extends Activity {
 			
 			displayYear++;
 			chosenYear=displayYear;
-			setChosenDay(1);
+			
 		}
-		
+		setChosenDay(1);
 		handler.sendEmptyMessage(CHANGE_MONTH);
 		
 		
@@ -904,32 +962,37 @@ public class MainActivity extends Activity {
 		}
 		if(chosenLine<weeks){
 			chosenLine++;
-			
+			int setDay=cv[chosenLine*7].getDay();
+			setChosenDay(setDay);
 			handler.sendEmptyMessage(SET_WEEK_MODE);
 		}else{
 			if (displayMonth < 11) {
-				displayMonth++;
+				displayMonth++;				
 				chosenMonth=displayMonth;
-				setChosenDay(1);
 				
-				
-				
+							
 			} else {
 				chosenMonth = 0;
 				displayMonth=0;
 				displayYear++;
 				chosenYear=displayYear;
-				setChosenDay(1);
-				
 				
 			}
+			if(switchWeek==0){
+				setChosenDay(1);
+				}else{
+					chosenDay=daysAfter%7+1;
+				}
 			
 			handler.sendEmptyMessage(CHANGE_MONTH);
 			
 			chosenLine=switchWeek;
 			
+			
 			handler.sendEmptyMessage(SET_WEEK_MODE);
 		}
 	}
+	wholeCalendar.startAnimation(animNext);	
+	handler.sendEmptyMessage(GET_TASK_LIST);
 }
 }

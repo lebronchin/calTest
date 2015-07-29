@@ -8,6 +8,11 @@
 package com.example.test;
 
 public final class R {
+    public static final class anim {
+        public static final int alpha=0x7f040000;
+        public static final int last=0x7f040001;
+        public static final int next=0x7f040002;
+    }
     public static final class attr {
     }
     public static final class drawable {
@@ -15,69 +20,70 @@ public final class R {
         public static final int round_corner=0x7f020001;
     }
     public static final class id {
-        public static final int c1=0x7f06000a;
-        public static final int c2=0x7f060012;
-        public static final int c3=0x7f06001a;
-        public static final int c4=0x7f060022;
-        public static final int c5=0x7f06002a;
-        public static final int c6=0x7f060032;
-        public static final int detail=0x7f060000;
-        public static final int diplay=0x7f060001;
-        public static final int grid_1=0x7f06000b;
-        public static final int grid_10=0x7f060015;
-        public static final int grid_11=0x7f060016;
-        public static final int grid_12=0x7f060017;
-        public static final int grid_13=0x7f060018;
-        public static final int grid_14=0x7f060019;
-        public static final int grid_15=0x7f06001b;
-        public static final int grid_16=0x7f06001c;
-        public static final int grid_17=0x7f06001d;
-        public static final int grid_18=0x7f06001e;
-        public static final int grid_19=0x7f06001f;
-        public static final int grid_2=0x7f06000c;
-        public static final int grid_20=0x7f060020;
-        public static final int grid_21=0x7f060021;
-        public static final int grid_22=0x7f060023;
-        public static final int grid_23=0x7f060024;
-        public static final int grid_24=0x7f060025;
-        public static final int grid_25=0x7f060026;
-        public static final int grid_26=0x7f060027;
-        public static final int grid_27=0x7f060028;
-        public static final int grid_28=0x7f060029;
-        public static final int grid_29=0x7f06002b;
-        public static final int grid_3=0x7f06000d;
-        public static final int grid_30=0x7f06002c;
-        public static final int grid_31=0x7f06002d;
-        public static final int grid_32=0x7f06002e;
-        public static final int grid_33=0x7f06002f;
-        public static final int grid_34=0x7f060030;
-        public static final int grid_35=0x7f060031;
-        public static final int grid_36=0x7f060033;
-        public static final int grid_37=0x7f060034;
-        public static final int grid_38=0x7f060035;
-        public static final int grid_39=0x7f060036;
-        public static final int grid_4=0x7f06000e;
-        public static final int grid_40=0x7f060037;
-        public static final int grid_41=0x7f060038;
-        public static final int grid_42=0x7f060039;
-        public static final int grid_5=0x7f06000f;
-        public static final int grid_6=0x7f060010;
-        public static final int grid_7=0x7f060011;
-        public static final int grid_8=0x7f060013;
-        public static final int grid_9=0x7f060014;
-        public static final int last=0x7f06003a;
-        public static final int next=0x7f06003b;
-        public static final int taskList=0x7f06003c;
-        public static final int timeTag=0x7f06003d;
-        public static final int titleTag=0x7f06003e;
-        public static final int w1=0x7f060003;
-        public static final int w2=0x7f060004;
-        public static final int w3=0x7f060005;
-        public static final int w4=0x7f060006;
-        public static final int w5=0x7f060007;
-        public static final int w6=0x7f060008;
-        public static final int w7=0x7f060002;
-        public static final int wholeCalendar=0x7f060009;
+        public static final int add=0x7f070002;
+        public static final int c1=0x7f07000b;
+        public static final int c2=0x7f070013;
+        public static final int c3=0x7f07001b;
+        public static final int c4=0x7f070023;
+        public static final int c5=0x7f07002b;
+        public static final int c6=0x7f070033;
+        public static final int detail=0x7f070000;
+        public static final int diplay=0x7f070001;
+        public static final int grid_1=0x7f07000c;
+        public static final int grid_10=0x7f070016;
+        public static final int grid_11=0x7f070017;
+        public static final int grid_12=0x7f070018;
+        public static final int grid_13=0x7f070019;
+        public static final int grid_14=0x7f07001a;
+        public static final int grid_15=0x7f07001c;
+        public static final int grid_16=0x7f07001d;
+        public static final int grid_17=0x7f07001e;
+        public static final int grid_18=0x7f07001f;
+        public static final int grid_19=0x7f070020;
+        public static final int grid_2=0x7f07000d;
+        public static final int grid_20=0x7f070021;
+        public static final int grid_21=0x7f070022;
+        public static final int grid_22=0x7f070024;
+        public static final int grid_23=0x7f070025;
+        public static final int grid_24=0x7f070026;
+        public static final int grid_25=0x7f070027;
+        public static final int grid_26=0x7f070028;
+        public static final int grid_27=0x7f070029;
+        public static final int grid_28=0x7f07002a;
+        public static final int grid_29=0x7f07002c;
+        public static final int grid_3=0x7f07000e;
+        public static final int grid_30=0x7f07002d;
+        public static final int grid_31=0x7f07002e;
+        public static final int grid_32=0x7f07002f;
+        public static final int grid_33=0x7f070030;
+        public static final int grid_34=0x7f070031;
+        public static final int grid_35=0x7f070032;
+        public static final int grid_36=0x7f070034;
+        public static final int grid_37=0x7f070035;
+        public static final int grid_38=0x7f070036;
+        public static final int grid_39=0x7f070037;
+        public static final int grid_4=0x7f07000f;
+        public static final int grid_40=0x7f070038;
+        public static final int grid_41=0x7f070039;
+        public static final int grid_42=0x7f07003a;
+        public static final int grid_5=0x7f070010;
+        public static final int grid_6=0x7f070011;
+        public static final int grid_7=0x7f070012;
+        public static final int grid_8=0x7f070014;
+        public static final int grid_9=0x7f070015;
+        public static final int last=0x7f07003b;
+        public static final int next=0x7f07003c;
+        public static final int taskList=0x7f07003d;
+        public static final int timeTag=0x7f07003e;
+        public static final int titleTag=0x7f07003f;
+        public static final int w1=0x7f070004;
+        public static final int w2=0x7f070005;
+        public static final int w3=0x7f070006;
+        public static final int w4=0x7f070007;
+        public static final int w5=0x7f070008;
+        public static final int w6=0x7f070009;
+        public static final int w7=0x7f070003;
+        public static final int wholeCalendar=0x7f07000a;
     }
     public static final class layout {
         public static final int activity_event_page=0x7f030000;
@@ -85,9 +91,9 @@ public final class R {
         public static final int tasklist_layout=0x7f030002;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int hello_world=0x7f040001;
-        public static final int title_activity_event_page=0x7f040002;
+        public static final int app_name=0x7f050000;
+        public static final int hello_world=0x7f050001;
+        public static final int title_activity_event_page=0x7f050002;
     }
     public static final class style {
         /** 
@@ -111,10 +117,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f060001;
     }
 }
