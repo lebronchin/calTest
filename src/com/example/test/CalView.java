@@ -35,7 +35,7 @@ public class CalView extends TextView{
 		setTextSize(25);//
 		setGravity(Gravity.CENTER);
 		setClickable(true);
-		//setTextColor(Color.parseColor("#9d9d9d"));
+		setTextColor(Color.parseColor("#5B5B5B"));
 		//setHeight(130);
 //		XmlPullParser xp = Resources.getSystem().getXml(R.drawable.round_corner);
 //		Drawable db;
@@ -51,7 +51,7 @@ public class CalView extends TextView{
 //		}
 		
 		
-		setBackgroundColor(Color.WHITE);
+		setBackgroundColor(Color.parseColor("#B2b2b2"));
 //		setOnClickListener(new OnClickListener() {
 //			
 //			@Override

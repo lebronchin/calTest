@@ -71,11 +71,9 @@ public final class R {
         public static final int grid_7=0x7f070012;
         public static final int grid_8=0x7f070014;
         public static final int grid_9=0x7f070015;
-        public static final int last=0x7f07003b;
-        public static final int next=0x7f07003c;
-        public static final int taskList=0x7f07003d;
-        public static final int timeTag=0x7f07003e;
-        public static final int titleTag=0x7f07003f;
+        public static final int taskList=0x7f07003b;
+        public static final int timeTag=0x7f07003c;
+        public static final int titleTag=0x7f07003d;
         public static final int w1=0x7f070004;
         public static final int w2=0x7f070005;
         public static final int w3=0x7f070006;

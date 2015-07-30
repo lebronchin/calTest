@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="${relativePackage}.${activityClass}" >
+    tools:context="${relativePackage}.${activityClass}" 
+    android:background="#Ececff"
+    >
     <LinearLayout 
        android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,8 +19,9 @@
             android:gravity="center"
             android:textSize="20sp"
             android:textColor="#FCFCFC"
-            android:onClick="home"
+         android:clickable="true"   
         android:layout_weight="1"
+        android:onClick="home"
         />
      <TextView 
         android:id="@+id/add"
@@ -28,11 +31,11 @@
             android:gravity="center"
             android:textSize="35sp"
             android:textColor="#FCFCFC"
-            android:onClick="addTask"
+            android:clickable="true"
             android:layout_weight="4"
             android:textStyle="bold"
             android:text="+"
-            
+            android:onClick="addTask"
         
         />
    </LinearLayout>
@@ -586,7 +589,7 @@
     </LinearLayout>
     
                      </com.example.test.CalGroup >
-    <LinearLayout 
+ <!--   <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -607,7 +610,7 @@
         android:text="next"
         android:onClick="nextMonth"/>    
         
-    </LinearLayout> 
+    </LinearLayout> -->
     
      <ListView 
           android:id="@+id/taskList"

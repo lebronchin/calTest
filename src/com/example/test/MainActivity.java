@@ -129,13 +129,23 @@ public class MainActivity extends Activity {
 					Log.i("touch", "ParentMOVE");
 					slideSpeed.addMovement(event);
 					slideSpeed.computeCurrentVelocity(1000);
+					//if((maxSpeedX>=0&&VelocityTrackerCompat.getXVelocity(slideSpeed, pointerId)>=0)||(maxSpeedX<0&&VelocityTrackerCompat.getXVelocity(slideSpeed, pointerId)<0)||maxSpeedX==0){
 					if (Math.abs(VelocityTrackerCompat.getXVelocity(slideSpeed, pointerId)) > Math.abs(maxSpeedX)) {
 						maxSpeedX = VelocityTrackerCompat.getXVelocity(slideSpeed, pointerId);
 					}
-					if (Math.abs(VelocityTrackerCompat.getYVelocity(slideSpeed, pointerId)) > Math.abs(maxSpeedY)) {
-						maxSpeedY = VelocityTrackerCompat.getYVelocity(slideSpeed, pointerId);
-					}
-					//display.setText("X velocity: " + maxSpeedX + "\nY velocity: " + maxSpeedY);
+//					}else{
+//						maxSpeedX=0;
+//					}
+					
+					//if((maxSpeedY>=0&&VelocityTrackerCompat.getYVelocity(slideSpeed, pointerId)>=0)||(maxSpeedY<0&&VelocityTrackerCompat.getYVelocity(slideSpeed, pointerId)<0)||maxSpeedY==0){
+						if (Math.abs(VelocityTrackerCompat.getYVelocity(slideSpeed, pointerId)) > Math.abs(maxSpeedY)) {
+							maxSpeedY = VelocityTrackerCompat.getYVelocity(slideSpeed, pointerId);
+						}
+//						}else{
+//							maxSpeedY=0;
+//						}
+					
+					//display.setText("X velocity: " + pointX + "\nY velocity: " + pointY+ "\nY gridHeight: "+gridHeight);
 					
 					location = new HashMap<String, Float>();
 					location.put("x", pointX);
@@ -154,39 +164,62 @@ public class MainActivity extends Activity {
 					Log.i("touch", "ParentUP");
 					int moveX;
 					int moveY;
-					try{
-					moveX= (int) (moveRecord.getFirst().get("x") - moveRecord.getLast().get("x"));
-					moveY = (int) (moveRecord.getFirst().get("y") - moveRecord.getLast().get("y"));
-					}catch(Exception e){
-						return false;
-					}
+//					try{
+//					moveX= (int) (moveRecord.getFirst().get("x") - moveRecord.getLast().get("x"));
+//					moveY = (int) (moveRecord.getFirst().get("y") - moveRecord.getLast().get("y"));
+//					}catch(Exception e){
+//						if(isWeekMode==true){
+//							
+//							handler.sendEmptyMessage(SET_WEEK_MODE);
+//							}else{
+//								
+//								handler.sendEmptyMessage(SET_MONTH_MODE);
+//							}
+//						return false;
+//					}
 					if(Math.abs(maxSpeedX)<Math.abs(maxSpeedY)){
 					
 					if (isWeekMode==false) {
-						if (moveY >= 2 * gridHeight||maxSpeedY<-2000) {
+						if ( pointY<=2 * gridHeight||maxSpeedY<-2500) {
+							//Log.i("brad", (pointY)+";"+(pointY >2 * gridHeight)+":"+maxSpeedY);
 							handler.sendEmptyMessage(SET_WEEK_MODE);
 							isWeekMode=true;
 						} else {
+							isWeekMode=false;
 							handler.sendEmptyMessage(SET_MONTH_MODE);
 							
 						}
 						maxSpeedY=0;
 					} else {
-						if (moveY <=-2 * gridHeight||maxSpeedY>2000) {
+						if (pointY >2 * gridHeight||maxSpeedY>2500) {
+							//Log.i("brad", (pointY)+";"+(pointY >2 * gridHeight)+":"+maxSpeedY);
 							handler.sendEmptyMessage(SET_MONTH_MODE);
 							isWeekMode=false;
 						} else {
+							isWeekMode=true;
 							handler.sendEmptyMessage(SET_WEEK_MODE);
 						}
 						maxSpeedY=0;
 					}
 					}else{
 						
-						if (maxSpeedX<-2000) {
+						if (maxSpeedX<-3000) {
+							if(isWeekMode==true){
 							nextMonth(null);
+							handler.sendEmptyMessage(SET_WEEK_MODE);
+							}else{
+								nextMonth(null);
+								handler.sendEmptyMessage(SET_MONTH_MODE);
+							}
+						} else if(maxSpeedX>3000) {
+							if(isWeekMode==true){
+								lastMonth(null);
+								handler.sendEmptyMessage(SET_WEEK_MODE);
+								}else{
+									lastMonth(null);
+									handler.sendEmptyMessage(SET_MONTH_MODE);
+								}
 							
-						} else if(maxSpeedX>2000) {
-							lastMonth(null);
 							
 						}
 						maxSpeedX=0;	
@@ -256,7 +289,7 @@ public class MainActivity extends Activity {
 	}
 	public void addTask(View view){
 		Intent it;
-
+        Log.i("brad", "click add");
 		it = new Intent(this, EventPage.class);
 		// startActivity(it);
 
@@ -269,7 +302,7 @@ public class MainActivity extends Activity {
 
 	private void loadEvent(int index) {
 		Intent it;
-
+		//Log.i("brad", "click load");
 		it = new Intent(this, EventPage.class);
 		// startActivity(it);
 
@@ -518,6 +551,7 @@ public class MainActivity extends Activity {
 						6 * gridHeight);
 				wholeCalendar.setLayoutParams(params3);
 				wholeCalendar.setPadding(0, 0, 0, 0);
+				Log.i("brad",wholeCalendar.getHeight()+":"+wholeCalendar.getPaddingTop()+":"+"monthMode");
 				break;
 			case 6:
 				CalGroup.LayoutParams params = new CalGroup.LayoutParams(CalGroup.LayoutParams.MATCH_PARENT,
@@ -527,7 +561,8 @@ public class MainActivity extends Activity {
 					displayMonth=chosenMonth;
 					displayYear=chosenYear;
 					setChosenDay(chosenDay);
-					Log.i("steve","cline:"+chosenLine+" chosenDay:"+chosenDay);
+					
+					//Log.i("steve","cline:"+chosenLine+" chosenDay:"+chosenDay);
 				}
 				handler.sendEmptyMessage(GET_TASK_LIST);
 				switch (chosenLine) {
@@ -558,6 +593,7 @@ public class MainActivity extends Activity {
 					wholeCalendar.setPadding(0, -5 * gridHeight, 0, 0);
 					break;
 				}
+				Log.i("brad",wholeCalendar.getHeight()+":"+wholeCalendar.getPaddingTop()+":"+"weekMode");
 				break;
 				
 			case 7:
@@ -572,7 +608,7 @@ public class MainActivity extends Activity {
 				sendEmptyMessage(CHANGE_DISPLAY);
 				adapter = new MyListAdapter(MainActivity.this, R.layout.tasklist_layout, (List) toDoList);
 				taskList.setAdapter(adapter);
-				String selectedColor="#272727";
+				String selectedColor="#CE0000";
 				for(int i =0;i<cv.length;i++){
 					String color=cv[i].getWordColor();
 					cv[i].setTextColor(Color.parseColor(color));
@@ -747,7 +783,7 @@ public class MainActivity extends Activity {
 		for (int i = 0; i < idPosition.length; i++) {
 
 			if (i < 8 && currentMonth[i] > 21) {
-				String color="#E0E0E0";
+				String color="#9D9D9D";
 				cv[i].setTextColor(Color.parseColor(color));
 				cv[i].setWordColor(color);
 				cv[i].setText(String.valueOf(currentMonth[i]));
@@ -759,7 +795,7 @@ public class MainActivity extends Activity {
 				daysBefore++;
 				
 			} else if (i > 29 && currentMonth[i] < 13) {
-				String color="#E0E0E0";
+				String color="#9D9D9D";
 				cv[i].setTextColor(Color.parseColor(color));
 				cv[i].setWordColor(color);
 				cv[i].setText(String.valueOf(currentMonth[i]));
@@ -770,7 +806,7 @@ public class MainActivity extends Activity {
 				}
 				daysAfter++;
 			} else {
-				String color="#9D9D9D";
+				String color="#5B5B5B";
 				cv[i].setTextColor(Color.parseColor(color));
 				cv[i].setWordColor(color);
 				cv[i].setText(String.valueOf(currentMonth[i]));
@@ -819,9 +855,9 @@ public class MainActivity extends Activity {
 		//query here
         handler.sendEmptyMessage(GET_TASK_LIST);
 		
-		Toast.makeText(this,
-				"You've chosen:" + chosenYear + "." + (chosenMonth + 1) + "." + chosenDay + " Line" + (chosenLine + 1),
-				Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this,
+//				"You've chosen:" + chosenYear + "." + (chosenMonth + 1) + "." + chosenDay + " Line" + (chosenLine + 1),
+//				Toast.LENGTH_SHORT).show();
 	}
 
 	public void lastMonth(View view) {
@@ -911,6 +947,7 @@ public class MainActivity extends Activity {
 			
 		}
 		wholeCalendar.startAnimation(animLast);	
+		taskList.startAnimation(animLast);
 		handler.sendEmptyMessage(GET_TASK_LIST);
 	}
 
@@ -999,6 +1036,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	wholeCalendar.startAnimation(animNext);	
+	taskList.startAnimation(animNext);
 	handler.sendEmptyMessage(GET_TASK_LIST);
 }
 }
