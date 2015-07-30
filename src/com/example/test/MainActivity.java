@@ -254,6 +254,18 @@ public class MainActivity extends Activity {
 		// Toast.makeText(this, cv.viewW+":"+cv.viewH,
 		// Toast.LENGTH_LONG).show();
 	}
+	public void addTask(View view){
+		Intent it;
+
+		it = new Intent(this, EventPage.class);
+		// startActivity(it);
+
+		it.putExtra("status", "new");
+
+		// startActivity(it);
+		startActivityForResult(it, 0);
+		finish();
+	}
 
 	private void loadEvent(int index) {
 		Intent it;
@@ -261,11 +273,12 @@ public class MainActivity extends Activity {
 		it = new Intent(this, EventPage.class);
 		// startActivity(it);
 
-		it.putExtra("id", toDoList.get(index).get("_id"));
-
+		it.putExtra("_id", toDoList.get(index).get("_id"));
+		Log.i("intent", index+":"+toDoList.get(index).get("_id"));
+		it.putExtra("status", "adit");
 		// startActivity(it);
 		startActivityForResult(it, 0);
-
+		finish();
 	}
 
 	@Override

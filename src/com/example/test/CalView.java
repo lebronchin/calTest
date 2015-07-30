@@ -78,7 +78,7 @@ public class CalView extends TextView{
 		
 		paint.setStrokeWidth(widthOfLine);
 		//canvas.drawCircle(50, 50, 50, paint);
-		canvas.drawLine(0, viewH-widthOfLine/2, viewW/2, viewH-widthOfLine/2, paint);
+		//canvas.drawLine(0, viewH-widthOfLine/2, viewW/2, viewH-widthOfLine/2, paint);
 		viewW = getWidth();
 		viewH =getHeight();
 		//Log.i("test", viewW+":"+viewH);

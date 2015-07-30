@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 
 
 public class EventPage extends Activity {
 	private TextView tv;
+	Intent back;
 	LinkedList<HashMap<String,String>> toDoList = new LinkedList<HashMap<String,String>>();
 	String[] TaskKey = {"id","color","Syear","Smonth","Sday","Shour","Sminute","Eyear","Emonth","Eday","Ehour","Eminute","description"};
 	String[] TaskValue ={"0001","#E6CAFF","2015","7","25","18","50","2015","8","1","16","00","Coding"};
@@ -36,28 +38,36 @@ public class EventPage extends Activity {
 		toDoList.add(l3);
 		Intent it = getIntent();
 		
-		String id = it.getStringExtra("id");
+		String mode = it.getStringExtra("status");
+		String id = it.getStringExtra("_id");
 		
 //		enum e {0001,0002,0003}
 //		switch(e){
 //		
 //		}
 		
-		if(id.equals("1")){
-			tv.setText(toDoList.get(0).toString());
-		}else if(id.equals("2")){
-			tv.setText(toDoList.get(1).toString());
-		}else if(id.equals("3")){
-			tv.setText(toDoList.get(2).toString());
+		if(mode.equals("new")){
+			tv.setText("Add a new event~");
 		}else{
-			
-			tv.setText("Error:"+id);
+			tv.setText("Edit the event with the id:"+id);
 		}
+				
+		
+//		back.putExtra("data", "222");
+//		setResult(111, back);
 		
 		
-		Intent data = new  Intent();
-		data.putExtra("data", "222");
-		setResult(111, data);
+	}
+	public void done(View view){
+		back = new  Intent(this, MainActivity.class);
+		startActivity(back);
+		finish();
+	}
+	@Override
+	public void finish() {
+		back = new  Intent(this, MainActivity.class);
+		startActivity(back);
+		super.finish();
 	}
 }
 
