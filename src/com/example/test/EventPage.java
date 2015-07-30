@@ -59,8 +59,7 @@ public class EventPage extends Activity {
 		
 	}
 	public void done(View view){
-		back = new  Intent(this, MainActivity.class);
-		startActivity(back);
+		
 		finish();
 	}
 	@Override
