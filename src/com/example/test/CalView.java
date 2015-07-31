@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class CalView extends TextView{
     private float widthOfLine;
 	private int year;
 	private int month;
-	private int day;
+	private int day=0;
 	private int lineOfCalendar;
 	private String textColor;
 	private HashMap<String, Integer[]> drawSpec;
@@ -37,29 +38,11 @@ public class CalView extends TextView{
 		setClickable(true);
 		setTextColor(Color.parseColor("#5B5B5B"));
 		//setHeight(130);
-//		XmlPullParser xp = Resources.getSystem().getXml(R.drawable.round_corner);
-//		Drawable db;
-//		try {
-//			db = Drawable.createFromXml(getResources(), xp);
-//			setBackground(db);
-//		} catch (XmlPullParserException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 		
 		
 		setBackgroundColor(Color.parseColor("#B2b2b2"));
-//		setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//		});
+
 	}
 	
 	@Override
@@ -70,15 +53,22 @@ public class CalView extends TextView{
 		viewW=canvas.getWidth();
 		viewH= canvas.getHeight();
 		widthOfLine=viewH/18;
-		paint.setColor(Color.GRAY);
+		setText(day+"");
+		paint.setColor(Color.YELLOW);
 		paint.setTextSize(50);
 		paint.setTextAlign(Paint.Align.CENTER);
 		
-		paint.setAlpha(100);
+		//paint.setAlpha(50);
 		
 		paint.setStrokeWidth(widthOfLine);
-		//canvas.drawCircle(50, 50, 50, paint);
+		canvas.drawCircle(20, 40, 10, paint);
+	
+		paint.setColor(Color.BLUE);
+		//paint.setAlpha(100);
+		canvas.drawCircle(50, 40, 10, paint);
 		//canvas.drawLine(0, viewH-widthOfLine/2, viewW/2, viewH-widthOfLine/2, paint);
+		Log.i("brad", day+"");
+		
 		viewW = getWidth();
 		viewH =getHeight();
 		//Log.i("test", viewW+":"+viewH);

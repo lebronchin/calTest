@@ -164,69 +164,73 @@ public class MainActivity extends Activity {
 					Log.i("touch", "ParentUP");
 					int moveX;
 					int moveY;
-//					try{
-//					moveX= (int) (moveRecord.getFirst().get("x") - moveRecord.getLast().get("x"));
-//					moveY = (int) (moveRecord.getFirst().get("y") - moveRecord.getLast().get("y"));
-//					}catch(Exception e){
-//						if(isWeekMode==true){
-//							
-//							handler.sendEmptyMessage(SET_WEEK_MODE);
-//							}else{
-//								
-//								handler.sendEmptyMessage(SET_MONTH_MODE);
-//							}
-//						return false;
-//					}
-					if(Math.abs(maxSpeedX)<Math.abs(maxSpeedY)){
-					
-					if (isWeekMode==false) {
-						if ( pointY<=2 * gridHeight||maxSpeedY<-2500) {
-							//Log.i("brad", (pointY)+";"+(pointY >2 * gridHeight)+":"+maxSpeedY);
-							handler.sendEmptyMessage(SET_WEEK_MODE);
-							isWeekMode=true;
-						} else {
-							isWeekMode=false;
-							handler.sendEmptyMessage(SET_MONTH_MODE);
+					try{
+					moveX= (int) (moveRecord.getFirst().get("x") - moveRecord.getLast().get("x"));
+					moveY = (int) (moveRecord.getFirst().get("y") - moveRecord.getLast().get("y"));
+					}catch(Exception e){
+						if(isWeekMode==true){
 							
-						}
-						maxSpeedY=0;
-					} else {
-						if (pointY >2 * gridHeight||maxSpeedY>2500) {
-							//Log.i("brad", (pointY)+";"+(pointY >2 * gridHeight)+":"+maxSpeedY);
-							handler.sendEmptyMessage(SET_MONTH_MODE);
-							isWeekMode=false;
-						} else {
-							isWeekMode=true;
-							handler.sendEmptyMessage(SET_WEEK_MODE);
-						}
-						maxSpeedY=0;
-					}
-					}else{
-						
-						if (maxSpeedX<-3000) {
-							if(isWeekMode==true){
-							nextMonth(null);
 							handler.sendEmptyMessage(SET_WEEK_MODE);
 							}else{
-								nextMonth(null);
+								
 								handler.sendEmptyMessage(SET_MONTH_MODE);
 							}
-						} else if(maxSpeedX>3000) {
-							if(isWeekMode==true){
+						return false;
+					}
+					if(Math.abs(maxSpeedX)>Math.abs(maxSpeedY)&&Math.abs(moveX)>Math.abs(moveY)){
+					
+					
+					if (maxSpeedX<-2500) {
+						if(isWeekMode==true){
+						nextMonth(null);
+						handler.sendEmptyMessage(SET_WEEK_MODE);
+						}else{
+							nextMonth(null);
+							handler.sendEmptyMessage(SET_MONTH_MODE);
+						}
+					} else if(maxSpeedX>2500) {
+						if(isWeekMode==true){
+							lastMonth(null);
+							handler.sendEmptyMessage(SET_WEEK_MODE);
+							}else{
 								lastMonth(null);
+								handler.sendEmptyMessage(SET_MONTH_MODE);
+							}
+						
+						
+					}
+					
+					}else{
+
+						if (isWeekMode==false) {
+							if ( pointY<=2 * gridHeight||maxSpeedY<-2500) {
+								//Log.i("brad", (pointY)+";"+(pointY >2 * gridHeight)+":"+maxSpeedY);
 								handler.sendEmptyMessage(SET_WEEK_MODE);
-								}else{
-									lastMonth(null);
-									handler.sendEmptyMessage(SET_MONTH_MODE);
-								}
+								isWeekMode=true;
+							} else {
+								isWeekMode=false;
+								handler.sendEmptyMessage(SET_MONTH_MODE);
+								
+							}
 							
+						} else {
+							if (pointY >2 * gridHeight||maxSpeedY>2500) {
+								//Log.i("brad", (pointY)+";"+(pointY >2 * gridHeight)+":"+maxSpeedY);
+								handler.sendEmptyMessage(SET_MONTH_MODE);
+								isWeekMode=false;
+							} else {
+								isWeekMode=true;
+								handler.sendEmptyMessage(SET_WEEK_MODE);
+							}
 							
 						}
-						maxSpeedX=0;	
+					
+						
 					}
 					slideSpeed.recycle();
 					moveRecord=new LinkedList<HashMap<String,Float>>();
-
+					maxSpeedX=0;
+					maxSpeedY=0;
 					return true;
 				}
 				return true;
